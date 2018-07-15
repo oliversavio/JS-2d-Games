@@ -56,11 +56,39 @@
         }
 
         var collosion = function () {
-            if (y + dy < 0 + raidus || y + dy > canvas.height - raidus) {
+            if (y + dy < 0 + raidus) {
                 dy = -dy;
             }
             if (x + dx < 0 + raidus || x + dx > canvas.width - raidus) {
                 dx = -dx;
+            }
+        };
+
+        var isBallBewteenPaddle = function () {
+            if (x > paddleX && x < (paddleX + paddleWidth)) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        var resetGame = function () {
+            x = canvas.width / 2;
+            y = canvas.height - 30;
+            isGameStarted = false;
+            dx = 2.5;
+            dy = -2.5;
+            paddleX = (canvas.width - paddleWidth) / 2;
+        };
+        
+        var triggerGameOver = function () {
+            if (y + dy > canvas.height - raidus) {
+                if (isBallBewteenPaddle()) {
+                    dy = -dy;
+                } else {
+                    resetGame();
+                    alert('Game over');
+                }
             }
         };
 
@@ -78,6 +106,7 @@
             drawBall();
             drawPaddle();
             collosion();
+            triggerGameOver();
             keyInputPaddleHandler();
             moveBall();
         };
@@ -89,7 +118,7 @@
             if (e.keyCode == 37) {
                 leftPressed = true;
             }
-            if(e.keyCode == 32) {
+            if (e.keyCode == 32) {
                 isGameStarted = true;
             }
         };

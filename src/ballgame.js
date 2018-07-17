@@ -1,6 +1,6 @@
 /*----------------------------------
-        * Game Variables
-        *----------------------------------*/
+* Game Variables
+*----------------------------------*/
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var x = canvas.width / 2;
@@ -25,13 +25,19 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var bricks = []
 
-/* Init Bricks Array */
-for (var c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (var r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0 , status: 1};
+
+var initBricks = function () {
+    for (var c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (var r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
     }
-}
+};
+
+/* Init Bricks Array */
+initBricks();
+
 
 function drawBricks() {
     for (var c = 0; c < brickColumnCount; c++) {
@@ -80,7 +86,7 @@ var brickCollisionDetection = function () {
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
             var b = bricks[c][r];
-            if(b.status == 1) {
+            if (b.status == 1) {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
                     b.status = 0;
@@ -106,6 +112,7 @@ var resetGame = function () {
     dx = Math.random() * (2.4 - 0.5) + 2.1;
     dy = -ballspeed;
     paddleX = (canvas.width - paddleWidth) / 2;
+    initBricks();
 };
 
 var triggerGameOver = function () {

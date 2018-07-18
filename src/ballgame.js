@@ -24,7 +24,7 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var bricks = []
-
+var score = 0;
 
 var initBricks = function () {
     for (var c = 0; c < brickColumnCount; c++) {
@@ -90,10 +90,17 @@ var brickCollisionDetection = function () {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
                     b.status = 0;
+                    score += 1;
                 }
             }
         }
     }
+}
+
+var drawScore = function () {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: " + score, 8, 20);
 }
 
 
@@ -112,6 +119,7 @@ var resetGame = function () {
     dx = Math.random() * (2.4 - 0.5) + 2.1;
     dy = -ballspeed;
     paddleX = (canvas.width - paddleWidth) / 2;
+    score = 0;
     initBricks();
 };
 
@@ -140,6 +148,7 @@ var draw = function () {
     drawBricks();
     drawBall();
     drawPaddle();
+    drawScore();
     collosion();
     brickCollisionDetection();
     triggerGameOver();

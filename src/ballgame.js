@@ -103,6 +103,11 @@ var drawScore = function () {
     ctx.fillText("Score: " + score, 8, 20);
 }
 
+var youWin = function() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("WINNER!", (canvas.width - paddleWidth) / 2, canvas.height / 2);
+}
 
 var isBallBewteenPaddle = function () {
     if (x > paddleX && x < (paddleX + paddleWidth)) {
@@ -132,6 +137,12 @@ var triggerGameOver = function () {
             alert('Game over');
         }
     }
+
+    if(score == (brickColumnCount * brickRowCount)) {
+        youWin();
+        isGameStarted = false;
+    }
+
 };
 
 var clearCanvas = function () { ctx.clearRect(0, 0, canvas.width, canvas.height); };
@@ -145,6 +156,7 @@ var moveBall = function () {
 
 var draw = function () {
     clearCanvas();
+    
     drawBricks();
     drawBall();
     drawPaddle();

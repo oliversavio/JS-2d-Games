@@ -166,6 +166,8 @@ var draw = function () {
     triggerGameOver();
     keyInputPaddleHandler();
     moveBall();
+
+    requestAnimationFrame(draw);
 };
 
 var keyDownHandler = function (e) {
@@ -199,4 +201,5 @@ var keyInputPaddleHandler = function () {
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-setInterval(draw, 10)
+
+draw();

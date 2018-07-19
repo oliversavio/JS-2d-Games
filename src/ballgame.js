@@ -25,6 +25,7 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var bricks = []
 var score = 0;
+var level = 1;
 
 var initBricks = function () {
     for (var c = 0; c < brickColumnCount; c++) {
@@ -91,6 +92,7 @@ var brickCollisionDetection = function () {
                     dy = -dy;
                     b.status = 0;
                     score += 1;
+                    levelIncrease();
                 }
             }
         }
@@ -103,11 +105,25 @@ var drawScore = function () {
     ctx.fillText("Score: " + score, 8, 20);
 }
 
+var drawLevel = function() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Level: " + level, canvas.width - 80, 20);
+}
+
 var youWin = function() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("WINNER!", (canvas.width - paddleWidth) / 2, canvas.height / 2);
-}
+};
+
+var levelIncrease = function(){
+    if(score % 2 == 0) {
+        level += 1;
+        dx = dx * 1.25;
+        dy = dy * 1.2;
+    }
+};
 
 var isBallBewteenPaddle = function () {
     if (x > paddleX && x < (paddleX + paddleWidth)) {
@@ -125,6 +141,7 @@ var resetGame = function () {
     dy = -ballspeed;
     paddleX = (canvas.width - paddleWidth) / 2;
     score = 0;
+    level = 1;
     initBricks();
 };
 
@@ -161,6 +178,7 @@ var draw = function () {
     drawBall();
     drawPaddle();
     drawScore();
+    drawLevel();
     collosion();
     brickCollisionDetection();
     triggerGameOver();

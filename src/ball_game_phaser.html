@@ -16,13 +16,18 @@
             margin: 0 auto;
         }
     </style>
+    <script src="js/phaser.min.js"></script>
 </head>
 
 <body>
-
-    <canvas id="myCanvas" width="480" height="320"></canvas>
-    <script src="ballgame.js"></script>
-   
+    <script>
+        var game = new Phaser.Game(480, 320, Phaser.CANVAS, null, {
+            preload: preload, create: create, update: update
+        });
+        function preload() { }
+        function create() { }
+        function update() { }
+    </script>
 </body>
 
 </html>

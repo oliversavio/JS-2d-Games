@@ -109,8 +109,8 @@ var drawLevel = function() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Level: " + level, canvas.width - 80, 20);
-    ctx.fillText("dx: " + dx, canvas.width - 80, 140);
-    ctx.fillText("dy: " + dy, canvas.width - 70, 160);
+    //ctx.fillText("dx: " + dx, canvas.width - 80, 140);
+    //ctx.fillText("dy: " + dy, canvas.width - 70, 160);
 }
 
 
@@ -224,9 +224,9 @@ var keyUpHandler = function (e) {
 
 var keyInputPaddleHandler = function () {
     if (rightPressed && paddleX < canvas.width - paddleWidth - paddlePadding) {
-        paddleX += 7;
+        paddleX += 8.5;
     } else if (leftPressed && paddleX > paddlePadding) {
-        paddleX += -7;
+        paddleX += -8.5;
     }
 };
 

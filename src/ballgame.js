@@ -109,7 +109,11 @@ var drawLevel = function() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Level: " + level, canvas.width - 80, 20);
+    ctx.fillText("dx: " + dx, canvas.width - 80, 140);
+    ctx.fillText("dy: " + dy, canvas.width - 70, 160);
 }
+
+
 
 var youWin = function() {
     ctx.font = "16px Arial";
@@ -119,11 +123,20 @@ var youWin = function() {
 
 var levelIncrease = function(){
     if(score % 2 == 0) {
+        dx = incrementWithRange(dx);
+        dy = incrementWithRange(dy);
         level += 1;
-        dx = dx * 1.25;
-        dy = dy * 1.2;
     }
 };
+
+var incrementWithRange = function(value) {
+    if(value > 0) {
+        return Math.min(value * 1.23, 5.50);
+    } else {
+        return Math.max(value * 1.23, -5.50);
+    }
+}; 
+
 
 var isBallBewteenPaddle = function () {
     if (x > paddleX && x < (paddleX + paddleWidth)) {

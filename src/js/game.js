@@ -77,6 +77,9 @@ var initBricks = function () {
 
 };
 
+var ballHitBrick = function(ball, brick){
+  brick.kill();
+};
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -87,6 +90,7 @@ function create() {
 
 function update() {
   game.physics.arcade.collide(ball, paddle);
+  game.physics.arcade.collide(ball, bricks, ballHitBrick);
   paddle.x = game.input.x || game.world.width * 0.5;
 }
 

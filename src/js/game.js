@@ -6,13 +6,19 @@ var ball;
 var paddle;
 
 function preload() {
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  game.scale.pageAlignHorizontally = true;
-  game.scale.pageAlignVertically = true;
+  //game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  //game.scale.pageAlignHorizontally = true;
+  //game.scale.pageAlignVertically = true;
   game.stage.backgroundColor = '#eee';
   game.load.image('ball', 'img/ball.png');
   game.load.image('paddle', 'img/paddle.png');
 }
+
+var handleGameOver = function () {
+  alert('Game over!');
+  location.reload();
+};
+
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   ball = game.add.sprite(game.world.width * 0.5, game.world.height - 25, 'ball');
@@ -21,10 +27,7 @@ function create() {
   game.physics.enable(ball, Phaser.Physics.ARCADE);
 
   ball.checkWorldBounds = true;
-  ball.events.onOutOfBounds.add(function () {
-    alert('Game over!');
-    location.reload();
-  }, this);
+  ball.events.onOutOfBounds.add(handleGameOver, this);
   ball.body.velocity.set(150, -150);
   ball.body.collideWorldBounds = true;
   ball.body.bounce.set(1);

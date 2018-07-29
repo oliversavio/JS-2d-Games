@@ -9,6 +9,8 @@ var newBrick;
 var brickInfo;
 var scoreText;
 var score = 0;
+var textStyle = { font: '18px Arial', fill: '#0095DD' };
+var speed = 10;
 
 function preload() {
   //game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -78,10 +80,32 @@ var initBricks = function () {
 
 };
 
+var winGame = function () {
+  var count_alive = 0;
+  for (i = 0; i < bricks.children.length; i++) {
+    if (bricks.children[i].alive == true) {
+      count_alive++;
+    }
+  }
+  if (count_alive == 0) {
+    alert('You won the game, congratulations!');
+    location.reload();
+  }
+};
+
 var ballHitBrick = function (ball, brick) {
   brick.kill();
   score += 10;
   scoreText.setText('Points: ' + score);
+  winGame();
+};
+
+var keyboardInputHandler = function () {
+  if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+    paddle.x = Math.max(paddle.x - speed, 0.5);
+  } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+    paddle.x  = Math.min(paddle.x + speed, game.world.width - 0.5);
+  }
 };
 
 function create() {
@@ -89,13 +113,14 @@ function create() {
   initBall();
   initPaddle();
   initBricks();
-  scoreText = game.add.text(5, 5, 'Points: 0', { font: '18px Arial', fill: '#0095DD' });
+  scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
+  
 }
 
 function update() {
   game.physics.arcade.collide(ball, paddle);
   game.physics.arcade.collide(ball, bricks, ballHitBrick);
-  paddle.x = game.input.x || game.world.width * 0.5;
+  keyboardInputHandler();
 }
 
 

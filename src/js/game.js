@@ -92,8 +92,8 @@ var winGame = function () {
 };
 
 var increaseLevel = function () {
-  ballVelocity = ballVelocity + 10;
-  ball.body.velocity.set(Math.min(ballVelocity, 200), Math.max(ballVelocity, -200));
+  ballVelocity = ballVelocity + 20;
+  ball.body.velocity.set(Math.min(ballVelocity, 400), Math.max(ballVelocity, -400));
 };
 
 var ballHitBrick = function (ball, brick) {

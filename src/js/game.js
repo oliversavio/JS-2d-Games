@@ -11,6 +11,7 @@ var scoreText;
 var score = 0;
 var textStyle = { font: '18px Arial', fill: '#0095DD' };
 var speed = 10;
+var ballVelocity = 150;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
@@ -90,9 +91,17 @@ var winGame = function () {
   }
 };
 
+var increaseLevel = function () {
+  ballVelocity = ballVelocity + 10;
+  ball.body.velocity.set(Math.min(ballVelocity, 200), Math.max(ballVelocity, -200));
+};
+
 var ballHitBrick = function (ball, brick) {
   brick.kill();
   score += 10;
+  if(score % 30 == 0) {
+    increaseLevel();
+  }
   scoreText.setText('Points: ' + score);
   winGame();
 };
@@ -100,8 +109,8 @@ var ballHitBrick = function (ball, brick) {
 var keyboardInputHandler = function () {
   if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
     paddle.x = Math.max(paddle.x - speed, 0.5);
-  } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
-    paddle.x  = Math.min(paddle.x + speed, game.world.width - 0.5);
+  } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+    paddle.x = Math.min(paddle.x + speed, game.world.width - 0.5);
   }
 };
 
@@ -111,7 +120,7 @@ function create() {
   initPaddle();
   initBricks();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
-  
+
 }
 
 function update() {

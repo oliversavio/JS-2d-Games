@@ -12,12 +12,15 @@ var score = 0;
 var textStyle = { font: '18px Arial', fill: '#0095DD' };
 var speed = 10;
 var ballVelocity = 150;
+var playing = false;
+var startButton;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
   game.load.image('ball', 'img/ball.png');
   game.load.image('paddle', 'img/paddle.png');
   game.load.image('brick', 'img/brick.png');
+  game.load.spritesheet('button', 'img/button.png', 120, 40);
 }
 
 var handleGameOver = function () {
@@ -26,7 +29,7 @@ var handleGameOver = function () {
 };
 
 var initBall = function () {
-  ball = game.add.sprite(game.world.width * 0.5, game.world.height - 25, 'ball');
+  ball = game.add.sprite(game.world.width * 0.5, game.world.height - 40, 'ball');
   //Done bounce at bottom
   game.physics.arcade.checkCollision.down = false;
   //Enable Physics
@@ -36,7 +39,7 @@ var initBall = function () {
   //Handle game over
   ball.events.onOutOfBounds.add(handleGameOver, this);
 
-  ball.body.velocity.set(150, -150);
+  //ball.body.velocity.set(150, -150);
   ball.body.collideWorldBounds = true;
   ball.body.bounce.set(1);
 };
@@ -99,7 +102,7 @@ var increaseLevel = function () {
 var ballHitBrick = function (ball, brick) {
   brick.kill();
   score += 10;
-  if(score % 30 == 0) {
+  if (score % 30 == 0) {
     increaseLevel();
   }
   scoreText.setText('Points: ' + score);
@@ -107,11 +110,26 @@ var ballHitBrick = function (ball, brick) {
 };
 
 var keyboardInputHandler = function () {
-  if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-    paddle.x = Math.max(paddle.x - speed, 0.5);
-  } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-    paddle.x = Math.min(paddle.x + speed, game.world.width - 0.5);
+  if (playing) {
+    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+      paddle.x = Math.max(paddle.x - speed, 0.5);
+    } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+      paddle.x = Math.min(paddle.x + speed, game.world.width - 0.5);
+    }
+  }else if(game.input.keyboard.isDown(Phaser.Keyboard.SPACE)) {
+    startGame();
   }
+};
+
+var initStartButton = function () {
+  startButton = game.add.button(game.world.width * 0.5, game.world.height * 0.5, 'button', startGame, this, 1, 0, 2);
+  startButton.anchor.set(0.5);
+};
+
+var startGame = function () {
+  startButton.destroy();
+  ball.body.velocity.set(150, -150);
+  playing = true;
 };
 
 function create() {
@@ -119,7 +137,9 @@ function create() {
   initBall();
   initPaddle();
   initBricks();
+  initStartButton();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
+
 
 }
 

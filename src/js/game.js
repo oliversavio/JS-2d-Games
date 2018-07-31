@@ -116,7 +116,7 @@ var keyboardInputHandler = function () {
     } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
       paddle.x = Math.min(paddle.x + speed, game.world.width - 0.5);
     }
-  }else if(game.input.keyboard.isDown(Phaser.Keyboard.SPACE)) {
+  }else if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
     startGame();
   }
 };

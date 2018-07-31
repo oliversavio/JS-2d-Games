@@ -9,6 +9,8 @@ var newBrick;
 var brickInfo;
 var scoreText;
 var score = 0;
+var levelText;
+var level = 1;
 var textStyle = { font: '18px Arial', fill: '#0095DD' };
 var speed = 10;
 var ballVelocity = 150;
@@ -97,6 +99,8 @@ var winGame = function () {
 var increaseLevel = function () {
   ballVelocity = ballVelocity + 20;
   ball.body.velocity.set(Math.min(ballVelocity, 400), Math.max(ballVelocity, -400));
+  level += 1;
+  levelText.setText("Level: " + level);
 };
 
 var ballHitBrick = function (ball, brick) {
@@ -139,8 +143,7 @@ function create() {
   initBricks();
   initStartButton();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
-
-
+  levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
 }
 
 function update() {

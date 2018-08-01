@@ -142,6 +142,10 @@ var animateBall = function () {
   ball.animations.add('wobble', [0, 1, 0, 2, 0, 1, 0, 2, 0], 24);
 };
 
+var ballHitPaddle = function(ball, paddle) {
+  ball.animations.play('wobble');
+}
+
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   initBall();
@@ -154,7 +158,7 @@ function create() {
 }
 
 function update() {
-  game.physics.arcade.collide(ball, paddle);
+  game.physics.arcade.collide(ball, paddle, ballHitPaddle);
   game.physics.arcade.collide(ball, bricks, ballHitBrick);
   keyboardInputHandler();
 }

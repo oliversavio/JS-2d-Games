@@ -23,6 +23,7 @@ function preload() {
   game.load.image('paddle', 'img/paddle.png');
   game.load.image('brick', 'img/brick.png');
   game.load.spritesheet('button', 'img/button.png', 120, 40);
+  game.load.spritesheet('ball', 'img/wobble.png', 20, 20);
 }
 
 var handleGameOver = function () {
@@ -120,7 +121,7 @@ var keyboardInputHandler = function () {
     } else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
       paddle.x = Math.min(paddle.x + speed, game.world.width - 0.5);
     }
-  }else if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+  } else if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
     startGame();
   }
 };
@@ -136,12 +137,18 @@ var startGame = function () {
   playing = true;
 };
 
+var animateBall = function () {
+  ball = game.add.sprite(50, 250, 'ball');
+  ball.animations.add('wobble', [0, 1, 0, 2, 0, 1, 0, 2, 0], 24);
+};
+
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   initBall();
   initPaddle();
   initBricks();
   initStartButton();
+  animateBall();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
 }

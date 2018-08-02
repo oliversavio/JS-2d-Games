@@ -138,7 +138,7 @@ var startGame = function () {
 };
 
 var animateBall = function () {
-  ball = game.add.sprite(50, 250, 'ball');
+  //ball = game.add.sprite(50, 250, 'ball');
   ball.animations.add('wobble', [0, 1, 0, 2, 0, 1, 0, 2, 0], 24);
 };
 

@@ -161,6 +161,7 @@ function update() {
   game.physics.arcade.collide(ball, paddle, ballHitPaddle);
   game.physics.arcade.collide(ball, bricks, ballHitBrick);
   keyboardInputHandler();
+  
 }
 
 

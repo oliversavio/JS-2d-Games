@@ -38,34 +38,31 @@ var initBall = function () {
   ballInfo = {
     count: 10,
     offset: 40,
-    cords: { x: 40, y: 30 }
+    cords: { x: 40, y: 0 }
   }
 
   balls = game.add.group();
   balls.enableBody = true;
   balls.physicsBodyType = Phaser.Physics.ARCADE;
+
   for(var i = 0 ; i < ballInfo.count ; i++) {
     x = ((i * ballInfo.offset) + ballInfo.cords.x);
     y = ballInfo.cords.y;
-    
     var ball = balls.create(x, y, 'ball');
-
-    //newBall = game.add.sprite(x, y, 'ball');
-    
-    //game.physics.enable(newBall, Phaser.Physics.ARCADE);
-    // Generate Random velocity between 150 - 180 for each ball
-    //velocity = Math.floor(Math.random() * 100) + velocityMin;
+    ball.name = 'ball' + x.toString() + y.toString();
     ball.body.velocity.set(0, genRandomVelocity());
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(redrawBall, this);
-    
   }
 
-
-
- // ball = game.add.sprite(game.world.width * 0.5, 10, 'ball');
- // game.physics.enable(ball, Phaser.Physics.ARCADE);
 };
+
+var redrawBall = function(ball) {
+  console.log(ball);
+  ball.reset(ball.x, 0);
+  ball.body.velocity.set(0, genRandomVelocity());
+};
+
 
 
 var initStartButton = function () {
@@ -75,29 +72,24 @@ var initStartButton = function () {
 
 var startGame = function () {
   startButton.destroy();
-  //ball.body.velocity.set(0, 150);
   playing = true;
+  initBall();
 };
 
 
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
-  initBall();
+  //initBall();
   initStartButton();
-  startGame(); //TODO remove this later
+  //startGame(); //TODO remove this later
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
 }
 
-var redrawBall = function(ball) {
-  console.log('reset');
-  //ball.reset(ball.x, 0);
-  //ball.body.velocity.set(0, genRandomVelocity());
-};
 
 function update() {
-  redrawBall();
+  
 
 }
 

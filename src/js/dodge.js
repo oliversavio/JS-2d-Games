@@ -35,10 +35,10 @@ var genRandomVelocity = function () {
 
 var initBall = function () {
   ballInfo = {
-    count: 10,
+    count: 11,
     offset: 40,
-    cords: { x: 40, y: -20 },
-    levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 },{ c: 10 }]
+    cords: { x: 20, y: -20 },
+    levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 }, { c: 10 }, { c: 11 }]
   }
 
   balls = game.add.group();

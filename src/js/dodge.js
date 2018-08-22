@@ -3,9 +3,6 @@ var game = new Phaser.Game(480, 320, Phaser.CANVAS, null, {
 });
 
 var balls;
-var paddle;
-var bricks;
-var newBall;
 var ballInfo;
 var scoreText;
 var score = 0;
@@ -38,7 +35,8 @@ var initBall = function () {
   ballInfo = {
     count: 10,
     offset: 40,
-    cords: { x: 40, y: 0 }
+    cords: { x: 40, y: -20 },
+    levels: [{c: 5}, {c: 7},{c: 8},{c: 10}]
   }
 
   balls = game.add.group();
@@ -50,17 +48,35 @@ var initBall = function () {
     y = ballInfo.cords.y;
     var ball = balls.create(x, y, 'ball');
     ball.name = 'ball' + x.toString() + y.toString();
-    ball.body.velocity.set(0, genRandomVelocity());
+    ball.body.velocity.set(0, 0);
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(redrawBall, this);
   }
 
 };
 
+var increaseLevel = function(){
+  if(level > ballInfo.levels.length) {
+    return;
+  }
+  var number = ballInfo.levels[level - 1];
+  for(var i = 0 ; i < number.c ; i++) {
+    var b = balls.getAt(i);
+    b.body.velocity.set(0, genRandomVelocity());
+  }
+  level += 1;
+  levelText.setText("Level: " + level);
+};
+
 var redrawBall = function(ball) {
-  console.log(ball);
   ball.reset(ball.x, 0);
   ball.body.velocity.set(0, genRandomVelocity());
+
+  score += 10;
+  if (score % 30 == 0) {
+    increaseLevel();
+  }
+  scoreText.setText('Points: ' + score);
 };
 
 
@@ -74,6 +90,7 @@ var startGame = function () {
   startButton.destroy();
   playing = true;
   initBall();
+  increaseLevel();
 };
 
 

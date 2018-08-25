@@ -2,8 +2,8 @@ var game = new Phaser.Game(480, 320, Phaser.CANVAS, null, {
   preload: preload, create: create, update: update
 });
 
-var balls;
-var ballInfo;
+var astroids;
+var astroidInfo;
 var scoreText;
 var score = 0;
 var levelText;
@@ -19,7 +19,7 @@ var sship;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
-  game.load.image('ball', 'img/ball.png');
+  game.load.image('astroid', 'img/astroid.png');
   game.load.image('sship', 'img/SpaceShipSmall.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
 }
@@ -34,28 +34,29 @@ var genRandomVelocity = function () {
 };
 
 var renderAstroids = function () {
-  for (var i = 0; i < ballInfo.count; i++) {
-    x = ((i * ballInfo.offset) + ballInfo.cords.x);
-    y = ballInfo.cords.y;
-    var ball = balls.create(x, y, 'ball');
-    ball.name = 'ball' + x.toString() + y.toString();
+  for (var i = 0; i < astroidInfo.count; i++) {
+    x = ((i * astroidInfo.offset) + astroidInfo.cords.x);
+    y = astroidInfo.cords.y;
+    var ball = astroids.create(x, y, 'astroid');
+    ball.name = 'astroid' + x.toString() + y.toString();
     ball.body.velocity.set(0, 0);
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(redrawBall, this);
+    ball.scale.setTo(0.1,0.1);
   }
 };
 
-var initBall = function () {
-  ballInfo = {
+var initAstroids = function () {
+  astroidInfo = {
     count: 11,
     offset: 40,
     cords: { x: 20, y: -20 },
     levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 }, { c: 10 }, { c: 11 }]
   }
 
-  balls = game.add.group();
-  balls.enableBody = true;
-  balls.physicsBodyType = Phaser.Physics.ARCADE;
+  astroids = game.add.group();
+  astroids.enableBody = true;
+  astroids.physicsBodyType = Phaser.Physics.ARCADE;
 };
 
 var initShip = function () {
@@ -79,13 +80,13 @@ var keyboardInputHandler = function (spriteObject) {
 };
 
 var increaseLevel = function () {
-  if (level > ballInfo.levels.length) {
+  if (level > astroidInfo.levels.length) {
     return;
   }
-  var number = ballInfo.levels[level - 1];
+  var number = astroidInfo.levels[level - 1];
   for (var i = 0; i < number.c; i++) {
-    var ballIndex = Math.floor(Math.random() * (ballInfo.count)) + 0;
-    var b = balls.getAt(ballIndex);
+    var ballIndex = Math.floor(Math.random() * (astroidInfo.count)) + 0;
+    var b = astroids.getAt(ballIndex);
     b.body.velocity.set(0, genRandomVelocity());
   }
   level += 1;
@@ -116,15 +117,15 @@ var startGame = function () {
   increaseLevel();
 };
 
-var destroyShip = function (sship, ball) {
+var destroyShip = function (sship, astroid) {
   console.log('Crash!!!');
-  redrawBall(ball);
+  redrawBall(astroid);
 };
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   initStartButton();
-  initBall();
+  initAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
 }
@@ -132,7 +133,7 @@ function create() {
 
 function update() {
   keyboardInputHandler(sship);
-  game.physics.arcade.collide(balls, sship, destroyShip);
+  game.physics.arcade.collide(astroids, sship, destroyShip);
 }
 
 

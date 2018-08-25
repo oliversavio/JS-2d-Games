@@ -15,10 +15,12 @@ var playing = true; //TODO chage to false later
 var startButton;
 var velocityMin = 100;
 var velocityMax = 200;
+var sship;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
   game.load.image('ball', 'img/ball.png');
+  game.load.image('sship', 'img/SpaceShipSmall.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
 }
 
@@ -36,7 +38,7 @@ var genRandomVelocity = function () {
 var initBall = function () {
   ballInfo = {
     count: 11,
-    offset: 40,
+    offset: 80,
     cords: { x: 20, y: -20 },
     levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 }, { c: 10 }, { c: 11 }]
   }
@@ -55,6 +57,11 @@ var initBall = function () {
     ball.events.onOutOfBounds.add(redrawBall, this);
   }
 
+};
+
+var initShip = function() {
+  sship = game.add.sprite(game.world.width * 0.5, game.world.height, 'sship')
+  sship.anchor.set(0.5, 1);
 };
 
 var increaseLevel = function () {
@@ -91,6 +98,7 @@ var startGame = function () {
   startButton.destroy();
   playing = true;
   initBall();
+  initShip();
   increaseLevel();
 };
 

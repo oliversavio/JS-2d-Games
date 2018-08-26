@@ -21,10 +21,14 @@ var backgroundScrollVelocity = 75;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
+  // https://opengameart.org/content/space-shooter-assets
   game.load.image('astroid', 'img/astroid.png');
+
   game.load.image('sship', 'img/SpaceShipSmall.png')
+  // https://opengameart.org/content/space-cartoony-tiled-texture
   game.load.image('background', 'img/space-tiled.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
+  game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
 }
 
 var handleGameOver = function () {
@@ -72,6 +76,7 @@ var initShip = function () {
   sship.scale.setTo(0.6, 0.6);
   game.physics.enable(sship, Phaser.Physics.ARCADE);
   sship.body.immovable = true;
+  sship.animations.add('kaboom');
 };
 
 var keyboardInputHandler = function (spriteObject) {
@@ -132,6 +137,8 @@ var startGame = function () {
 
 var destroyShip = function (sship, astroid) {
   console.log('Crash!!!');
+  sship.animations.play('kaboom', 30, true, false);
+  sship.reset(sship.x, sship.y);
   redrawBall(astroid);
 };
 

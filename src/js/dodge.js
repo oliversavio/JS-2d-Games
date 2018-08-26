@@ -1,4 +1,4 @@
-var game = new Phaser.Game(480, 320, Phaser.CANVAS, null, {
+var game = new Phaser.Game(470, 580, Phaser.CANVAS, null, {
   preload: preload, create: create, update: update
 });
 
@@ -13,14 +13,17 @@ var speed = 5;
 var ballVelocity = 150;
 var playing = true; //TODO chage to false later
 var startButton;
-var velocityMin = 100;
-var velocityMax = 200;
+var velocityMin = 150;
+var velocityMax = 250;
 var sship;
+var background;
+var backgroundScrollVelocity = 75;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
   game.load.image('astroid', 'img/astroid.png');
   game.load.image('sship', 'img/SpaceShipSmall.png')
+  game.load.image('background', 'img/space-tiled.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
 }
 
@@ -33,6 +36,11 @@ var genRandomVelocity = function () {
   return Math.floor(Math.random() * (velocityMax - velocityMin + 1)) + velocityMin;
 };
 
+var initGameBackground = function () {
+  background = game.add.tileSprite(0, 0, 470, 580, 'background');
+  background.autoScroll(0, backgroundScrollVelocity);
+};
+
 var renderAstroids = function () {
   for (var i = 0; i < astroidInfo.count; i++) {
     x = ((i * astroidInfo.offset) + astroidInfo.cords.x);
@@ -42,7 +50,7 @@ var renderAstroids = function () {
     ball.body.velocity.set(0, 0);
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(redrawBall, this);
-    ball.scale.setTo(0.1,0.1);
+    ball.scale.setTo(0.1, 0.1);
   }
 };
 
@@ -124,6 +132,7 @@ var destroyShip = function (sship, astroid) {
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
+  initGameBackground();
   initStartButton();
   initAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);

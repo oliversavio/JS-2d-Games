@@ -18,6 +18,7 @@ var velocityMax = 250;
 var sship;
 var background;
 var backgroundScrollVelocity = 75;
+var exp;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
@@ -76,7 +77,10 @@ var initShip = function () {
   sship.scale.setTo(0.6, 0.6);
   game.physics.enable(sship, Phaser.Physics.ARCADE);
   sship.body.immovable = true;
-  sship.animations.add('kaboom');
+
+  exp = game.add.sprite(100, 100, 'kaboom');
+  exp.animations.add('kaboom', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 23);
+
 };
 
 var keyboardInputHandler = function (spriteObject) {
@@ -121,7 +125,7 @@ var initStartButton = function () {
   startButton.anchor.set(0.5);
 };
 
-var startSpaceScroll = function(){
+var startSpaceScroll = function () {
   background.autoScroll(0, backgroundScrollVelocity);
 };
 
@@ -138,7 +142,7 @@ var startGame = function () {
 var destroyShip = function (sship, astroid) {
   console.log('Crash!!!');
   sship.animations.play('kaboom', 30, true, false);
-  sship.reset(sship.x, sship.y);
+  exp.animations.play('kaboom');
   redrawBall(astroid);
 };
 

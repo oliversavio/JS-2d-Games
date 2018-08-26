@@ -38,7 +38,6 @@ var genRandomVelocity = function () {
 
 var initGameBackground = function () {
   background = game.add.tileSprite(0, 0, 470, 580, 'background');
-  background.autoScroll(0, backgroundScrollVelocity);
 };
 
 var renderAstroids = function () {
@@ -69,7 +68,7 @@ var initAstroids = function () {
 
 var initShip = function () {
   sship = game.add.sprite(game.world.width * 0.5, game.world.height, 'sship')
-  sship.anchor.set(0.5, 1);
+  sship.anchor.set(0.5, 5);
   sship.scale.setTo(0.6, 0.6);
   game.physics.enable(sship, Phaser.Physics.ARCADE);
   sship.body.immovable = true;
@@ -117,9 +116,15 @@ var initStartButton = function () {
   startButton.anchor.set(0.5);
 };
 
+var startSpaceScroll = function(){
+  background.autoScroll(0, backgroundScrollVelocity);
+};
+
+
 var startGame = function () {
   startButton.destroy();
   playing = true;
+  startSpaceScroll();
   renderAstroids();
   initShip();
   increaseLevel();

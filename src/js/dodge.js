@@ -8,7 +8,7 @@ var scoreText;
 var score = 0;
 var levelText;
 var level = 1;
-var textStyle = { font: '18px Arial', fill: '#0095DD' };
+var textStyle = { font: '18px Arial', fill: '#ffffff' };
 var speed = 5;
 var ballVelocity = 150;
 var playing = true; //TODO chage to false later
@@ -19,9 +19,9 @@ var sship;
 var background;
 var backgroundScrollVelocity = 75;
 var explosions;
-var lives = 0;
-var liveLimit = 3;
+var lives = 3;
 var gameOverText;
+var livesText;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
@@ -151,7 +151,7 @@ var startGame = function () {
 };
 
 var gameOverCheck = function () {
-  if (lives >= liveLimit) {
+  if (lives <= 0) {
     astroids.kill();
     sship.kill();
     gameOverText = game.add.text(game.world.width * 0.5, game.world.height * 0.5, "GAME OVER!!!", { font: '24px Arial', fill: '#0095DD', fontWright: 'bold'});
@@ -160,11 +160,12 @@ var gameOverCheck = function () {
 };
 
 var destroyShip = function (sship, astroid) {
-  console.log('Crash!!!');
+  //console.log('Crash!!!');
   var explosion = explosions.getFirstExists(false);
   explosion.reset(sship.body.x, sship.body.y);
   explosion.play('explode', 30, false, true);
-  lives += 1;
+  lives -= 1;
+  livesText.setText("Lives: " + lives);
   gameOverCheck();
   redrawBall(astroid);
 };
@@ -176,6 +177,8 @@ function create() {
   initAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
+  livesText = game.add.text(game.world.width * 0.5, 20, "Lives: 3", textStyle);
+  livesText.anchor.set(0.5);
 }
 
 

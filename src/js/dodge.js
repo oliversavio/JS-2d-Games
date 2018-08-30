@@ -13,8 +13,8 @@ var speed = 5;
 var ballVelocity = 150;
 var playing = true; //TODO chage to false later
 var startButton;
-var velocityMin = 150;
-var velocityMax = 250;
+var velocityMin = 180;
+var velocityMax = 300;
 var sship;
 var background;
 var backgroundScrollVelocity = 75;

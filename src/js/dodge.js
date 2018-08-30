@@ -19,6 +19,9 @@ var sship;
 var background;
 var backgroundScrollVelocity = 75;
 var explosions;
+var lives = 0;
+var liveLimit = 3;
+var gameOverText;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
@@ -77,9 +80,6 @@ var initShip = function () {
   sship.scale.setTo(0.6, 0.6);
   game.physics.enable(sship, Phaser.Physics.ARCADE);
   sship.body.immovable = true;
-
-  //exp = game.add.sprite(100, 100, 'kaboom');
-  //sship.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 23);
 
 };
 
@@ -149,11 +149,22 @@ var startGame = function () {
   increaseLevel();
 };
 
+var gameOverCheck = function () {
+  if (lives >= liveLimit) {
+    astroids.kill();
+    sship.kill();
+    gameOverText = game.add.text(game.world.width * 0.5, game.world.height * 0.5, "GAME OVER!!!", { font: '24px Arial', fill: '#0095DD', fontWright: 'bold'});
+    gameOverText.anchor.set(0.5);
+  }
+};
+
 var destroyShip = function (sship, astroid) {
   console.log('Crash!!!');
   var explosion = explosions.getFirstExists(false);
-  explosion.reset(sship.body.x - 30.0 , sship.body.y - 20.0);
+  explosion.reset(sship.body.x - 30.0, sship.body.y - 20.0);
   explosion.play('explode', 30, false, true);
+  lives += 1;
+  gameOverCheck();
   redrawBall(astroid);
 };
 

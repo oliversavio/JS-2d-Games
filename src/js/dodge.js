@@ -88,6 +88,7 @@ var initExplosions = function () {
   explosions.createMultiple(30, 'kaboom');
   explosions.forEach(element => {
     element.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 23);
+    element.anchor.set(0.4);
   });
 };
 
@@ -161,7 +162,7 @@ var gameOverCheck = function () {
 var destroyShip = function (sship, astroid) {
   console.log('Crash!!!');
   var explosion = explosions.getFirstExists(false);
-  explosion.reset(sship.body.x - 30.0, sship.body.y - 20.0);
+  explosion.reset(sship.body.x, sship.body.y);
   explosion.play('explode', 30, false, true);
   lives += 1;
   gameOverCheck();

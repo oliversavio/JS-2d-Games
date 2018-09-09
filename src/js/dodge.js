@@ -11,7 +11,7 @@ var level = 1;
 var textStyle = { font: '18px Arial', fill: '#ffffff' };
 var speed = 5;
 var ballVelocity = 150;
-var playing = true; //TODO chage to false later
+var playing = false; //TODO chage to false later
 var startButton;
 var velocityMin = 180;
 var velocityMax = 300;
@@ -154,7 +154,7 @@ var gameOverCheck = function () {
   if (lives <= 0) {
     astroids.kill();
     sship.kill();
-    gameOverText = game.add.text(game.world.width * 0.5, game.world.height * 0.5, "GAME OVER!!!", { font: '24px Arial', fill: '#0095DD', fontWright: 'bold'});
+    gameOverText = game.add.text(game.world.width * 0.5, game.world.height * 0.5, "GAME OVER!!!", { font: '24px Arial', fill: '#0095DD', fontWright: 'bold' });
     gameOverText.anchor.set(0.5);
   }
 };
@@ -177,7 +177,7 @@ function create() {
   initAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
-  livesText = game.add.text(game.world.width * 0.5, 20, "Lives: 3", textStyle);
+  livesText = game.add.text(game.world.width * 0.5, 20, "Lives: "+ lives, textStyle);
   livesText.anchor.set(0.5);
 }
 

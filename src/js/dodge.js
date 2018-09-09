@@ -1,4 +1,4 @@
-var game = new Phaser.Game(470, 580, Phaser.CANVAS, null, {
+var game = new Phaser.Game(470, 600, Phaser.CANVAS, null, {
   preload: preload, create: create, update: update
 });
 
@@ -9,9 +9,9 @@ var score = 0;
 var levelText;
 var level = 1;
 var textStyle = { font: '18px Arial', fill: '#ffffff' };
-var speed = 5;
+var speed = 6;
 var ballVelocity = 150;
-var playing = false; //TODO chage to false later
+var playing = false;
 var startButton;
 var velocityMin = 180;
 var velocityMax = 300;
@@ -45,7 +45,7 @@ var genRandomVelocity = function () {
 };
 
 var initGameBackground = function () {
-  background = game.add.tileSprite(0, 0, 470, 580, 'background');
+  background = game.add.tileSprite(0, 0, 470, 600, 'background');
 };
 
 var renderAstroids = function () {
@@ -177,7 +177,7 @@ function create() {
   initAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
-  livesText = game.add.text(game.world.width * 0.5, 20, "Lives: "+ lives, textStyle);
+  livesText = game.add.text(game.world.width * 0.5, 20, "Lives: " + lives, textStyle);
   livesText.anchor.set(0.5);
 }
 

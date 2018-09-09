@@ -87,7 +87,7 @@ var initExplosions = function () {
   explosions = game.add.group();
   explosions.createMultiple(30, 'kaboom');
   explosions.forEach(element => {
-    element.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 23);
+    element.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 24);
     element.anchor.set(0.4);
   });
 };

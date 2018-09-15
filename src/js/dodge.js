@@ -43,15 +43,15 @@ var initGameBackground = function () {
 };
 
 var renderAstroids = function () {
-  for (var i = 0; i < astroidInfo.count; i++) {
+  for (let i = 0; i < astroidInfo.count; i++) {
     x = ((i * astroidInfo.offset) + astroidInfo.cords.x);
     y = astroidInfo.cords.y;
-    var ball = astroids.create(x, y, 'astroid');
-    ball.name = 'astroid' + x.toString() + y.toString();
-    ball.body.velocity.set(0, 0);
-    ball.checkWorldBounds = true;
-    ball.events.onOutOfBounds.add(redrawBall, this);
-    ball.scale.setTo(0.1, 0.1);
+    let astroid = astroids.create(x, y, 'astroid');
+    astroid.name = 'astroid' + x.toString() + y.toString();
+    astroid.body.velocity.set(0, 0);
+    astroid.checkWorldBounds = true;
+    astroid.events.onOutOfBounds.add(redrawBall, this);
+    astroid.scale.setTo(0.1, 0.1);
   }
 };
 

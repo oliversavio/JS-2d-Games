@@ -22,11 +22,13 @@ var explosions;
 var lives = 3;
 var gameOverText;
 var livesText;
+var goodAstroids;
 
 function preload() {
   game.stage.backgroundColor = '#eee';
   // https://opengameart.org/content/space-shooter-assets
   game.load.image('astroid', 'img/astroid.png');
+  game.load.image('goodAstroid', 'img/astroid_g.png');
   game.load.image('sship', 'img/SpaceShipSmall.png')
   // https://opengameart.org/content/space-cartoony-tiled-texture
   game.load.image('background', 'img/space-tiled.png')
@@ -34,8 +36,12 @@ function preload() {
   game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
 }
 
+var genRandWithRange = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 var genRandomVelocity = function () {
-  return Math.floor(Math.random() * (velocityMax - velocityMin + 1)) + velocityMin;
+  return genRandWithRange(velocityMin, velocityMax);
 };
 
 var initGameBackground = function () {
@@ -53,6 +59,20 @@ var renderAstroids = function () {
     astroid.events.onOutOfBounds.add(redrawBall, this);
     astroid.scale.setTo(0.1, 0.1);
   }
+};
+
+var initGoodAstroids = function () {
+  goodAstroids = game.add.group();
+  goodAstroids.enableBody = true;
+  goodAstroids.physicsBodyType = Phaser.Physics.ARCADE;
+
+  let gx = [
+    genRandWithRange(0,astroidInfo.count * 0.5),
+    genRandWithRange(Math.floor(astroidInfo.count * 0.25), Math.floor(astroidInfo.count * 0.75)),
+    genRandWithRange(Math.floor(astroidInfo.count * 0.5) + 1, astroidInfo.count)
+  ];
+
+
 };
 
 var initAstroids = function () {

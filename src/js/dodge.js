@@ -27,18 +27,12 @@ function preload() {
   game.stage.backgroundColor = '#eee';
   // https://opengameart.org/content/space-shooter-assets
   game.load.image('astroid', 'img/astroid.png');
-
   game.load.image('sship', 'img/SpaceShipSmall.png')
   // https://opengameart.org/content/space-cartoony-tiled-texture
   game.load.image('background', 'img/space-tiled.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
   game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
 }
-
-var handleGameOver = function () {
-  alert('Game over!');
-  location.reload();
-};
 
 var genRandomVelocity = function () {
   return Math.floor(Math.random() * (velocityMax - velocityMin + 1)) + velocityMin;
@@ -87,7 +81,7 @@ var initExplosions = function () {
   explosions = game.add.group();
   explosions.createMultiple(30, 'kaboom');
   explosions.forEach(element => {
-    element.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 24);
+    element.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 26);
     element.anchor.set(0.4);
   });
 };
@@ -109,10 +103,10 @@ var increaseLevel = function () {
   if (level > astroidInfo.levels.length) {
     return;
   }
-  var number = astroidInfo.levels[level - 1];
-  for (var i = 0; i < number.c; i++) {
-    var ballIndex = Math.floor(Math.random() * (astroidInfo.count)) + 0;
-    var b = astroids.getAt(ballIndex);
+  let number = astroidInfo.levels[level - 1];
+  for (let i = 0; i < number.c; i++) {
+    let ballIndex = Math.floor(Math.random() * (astroidInfo.count)) + 0;
+    let b = astroids.getAt(ballIndex);
     b.body.velocity.set(0, genRandomVelocity());
   }
   level += 1;
@@ -161,7 +155,7 @@ var gameOverCheck = function () {
 
 var destroyShip = function (sship, astroid) {
   //console.log('Crash!!!');
-  var explosion = explosions.getFirstExists(false);
+  let explosion = explosions.getFirstExists(false);
   explosion.reset(sship.body.x, sship.body.y);
   explosion.play('explode', 30, false, true);
   lives -= 1;

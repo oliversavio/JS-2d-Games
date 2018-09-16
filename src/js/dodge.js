@@ -213,10 +213,16 @@ var destroyShip = function (sship, astroid) {
   redrawBall(astroid);
 };
 
+var toggleGodModeOff = function(){
+  sship.reset(gsship.x, gsship.y);
+  gsship.reset(-20,-20);
+};
+
 var toggleGodMode = function(ship, astroid){
   gsship.reset(ship.x, ship.y); 
   sship.reset(-20,-20);
   astroid.kill();
+  game.time.events.add(4000, toggleGodModeOff, this);
 };
 
 function create() {

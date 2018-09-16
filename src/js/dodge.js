@@ -218,10 +218,7 @@ function create() {
   livesText.anchor.set(0.5);
 }
 
-
 function update() {
   keyboardInputHandler(sship);
   game.physics.arcade.collide(astroids, sship, destroyShip);
 }
-
-

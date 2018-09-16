@@ -44,14 +44,18 @@ var genRandomVelocity = function () {
   return genRandWithRange(velocityMin, velocityMax);
 };
 
+var genRandomVelocityForGoodAstroids = function () {
+  return genRandWithRange(velocityMin * 0.5, velocityMax * 0.5);
+};
+
 var initGameBackground = function () {
   background = game.add.tileSprite(0, 0, 470, 600, 'background');
 };
 
 var renderAstroids = function () {
   for (let i = 0; i < astroidInfo.count; i++) {
-    x = ((i * astroidInfo.offset) + astroidInfo.cords.x);
-    y = astroidInfo.cords.y;
+    let x = ((i * astroidInfo.offset) + astroidInfo.cords.x);
+    let y = astroidInfo.cords.y;
     let astroid = astroids.create(x, y, 'astroid');
     astroid.name = 'astroid' + x.toString() + y.toString();
     astroid.body.velocity.set(0, 0);
@@ -67,12 +71,28 @@ var initGoodAstroids = function () {
   goodAstroids.physicsBodyType = Phaser.Physics.ARCADE;
 
   let gx = [
-    genRandWithRange(0,astroidInfo.count * 0.5),
-    genRandWithRange(Math.floor(astroidInfo.count * 0.25), Math.floor(astroidInfo.count * 0.75)),
-    genRandWithRange(Math.floor(astroidInfo.count * 0.5) + 1, astroidInfo.count)
+    genRandWithRange(0, astroidInfo.count - 1),
+    genRandWithRange(0, astroidInfo.count - 1),
+    genRandWithRange(0, astroidInfo.count - 1)
   ];
 
+  gx.forEach(index => {
+    let x = ((index * astroidInfo.offset) + astroidInfo.cords.x);
+    let y = astroidInfo.cords.y;
+    let gAstroid = goodAstroids.create(x, y, 'goodAstroid');
+    gAstroid.body.velocity.set(0, 0);
+    gAstroid.checkWorldBounds = true;
+    gAstroid.events.onOutOfBounds.add(function (ga) { ga.kill(); }, this);
+    gAstroid.scale.setTo(0.1, 0.1);
+  });
+};
 
+var generateGoodAstroids = function () {
+  if (score % 100 != 0) { return; }
+  if (goodAstroids.countLiving() <= 0) { return; }
+
+  let gAstroid = goodAstroids.getRandomExists();
+  gAstroid.body.velocity.set(0, genRandomVelocityForGoodAstroids());
 };
 
 var initAstroids = function () {
@@ -142,6 +162,7 @@ var redrawBall = function (ball) {
     increaseLevel();
   }
   scoreText.setText('Points: ' + score);
+  generateGoodAstroids();
 };
 
 var initStartButton = function () {
@@ -160,6 +181,7 @@ var startGame = function () {
   startSpaceScroll();
   renderAstroids();
   initExplosions();
+  initGoodAstroids();
   initShip();
   increaseLevel();
 };
@@ -168,6 +190,7 @@ var gameOverCheck = function () {
   if (lives <= 0) {
     astroids.kill();
     sship.kill();
+    goodAstroids.kill();
     gameOverText = game.add.text(game.world.width * 0.5, game.world.height * 0.5, "GAME OVER!!!", { font: '24px Arial', fill: '#0095DD', fontWright: 'bold' });
     gameOverText.anchor.set(0.5);
   }

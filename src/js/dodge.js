@@ -3,18 +3,13 @@ var game = new Phaser.Game(470, 600, Phaser.CANVAS, null, {
 });
 
 var astroids;
-var astroidInfo;
 var scoreText;
 var score = 0;
 var levelText;
 var level = 1;
-var textStyle = { font: '18px Arial', fill: '#ffffff' };
 var speed = 6;
-var ballVelocity = 150;
 var playing = false;
 var startButton;
-var velocityMin = 180;
-var velocityMax = 300;
 var sship;
 var background;
 var backgroundScrollVelocity = 75;
@@ -23,13 +18,25 @@ var lives = 3;
 var gameOverText;
 var livesText;
 var goodAstroids;
+var gsship;
+const textStyle = { font: '18px Arial', fill: '#ffffff' };
+const velocityMin = 180;
+const velocityMax = 300;
+const ballVelocity = 150;
+const astroidInfo = {
+  count: 11,
+  offset: 40,
+  cords: { x: 20, y: -20 },
+  levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 }, { c: 10 }, { c: 11 }]
+};
 
 function preload() {
   game.stage.backgroundColor = '#eee';
   // https://opengameart.org/content/space-shooter-assets
   game.load.image('astroid', 'img/astroid.png');
   game.load.image('goodAstroid', 'img/astroid_g.png');
-  game.load.image('sship', 'img/SpaceShipSmall.png')
+  game.load.image('sship', 'img/SpaceShipSmall.png');
+  game.load.image('gsship', 'img/SpaceShipSmall_god.png');
   // https://opengameart.org/content/space-cartoony-tiled-texture
   game.load.image('background', 'img/space-tiled.png')
   game.load.spritesheet('button', 'img/button.png', 120, 40);
@@ -96,26 +103,27 @@ var generateGoodAstroids = function () {
 };
 
 var initAstroids = function () {
-  astroidInfo = {
-    count: 11,
-    offset: 40,
-    cords: { x: 20, y: -20 },
-    levels: [{ c: 2 }, { c: 3 }, { c: 5 }, { c: 7 }, { c: 9 }, { c: 10 }, { c: 11 }]
-  }
-
   astroids = game.add.group();
   astroids.enableBody = true;
   astroids.physicsBodyType = Phaser.Physics.ARCADE;
 };
 
 var initShip = function () {
-  sship = game.add.sprite(game.world.width * 0.5, game.world.height, 'sship')
+  sship = game.add.sprite(game.world.width * 0.5, game.world.height, 'sship');
   sship.anchor.set(0.5, 5);
   sship.scale.setTo(0.6, 0.6);
   game.physics.enable(sship, Phaser.Physics.ARCADE);
   sship.body.immovable = true;
-
 };
+
+var initGship = function () {
+  gsship = game.add.sprite(-20, -20, 'gsship');
+  gsship.anchor.set(0.5, 5);
+  gsship.scale.setTo(0.6, 0.6);
+  game.physics.enable(gsship, Phaser.Physics.ARCADE);
+  gsship.body.immovable = true;
+};
+
 
 var initExplosions = function () {
   explosions = game.add.group();
@@ -180,9 +188,8 @@ var startGame = function () {
   playing = true;
   startSpaceScroll();
   renderAstroids();
-  initExplosions();
-  initGoodAstroids();
   initShip();
+  initGship();
   increaseLevel();
 };
 
@@ -197,7 +204,6 @@ var gameOverCheck = function () {
 };
 
 var destroyShip = function (sship, astroid) {
-  //console.log('Crash!!!');
   let explosion = explosions.getFirstExists(false);
   explosion.reset(sship.body.x, sship.body.y);
   explosion.play('explode', 30, false, true);
@@ -207,11 +213,19 @@ var destroyShip = function (sship, astroid) {
   redrawBall(astroid);
 };
 
+var toggleGodMode = function(ship, astroid){
+  gsship.reset(ship.x, ship.y); 
+  sship.reset(-20,-20);
+  astroid.kill();
+};
+
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   initGameBackground();
   initStartButton();
   initAstroids();
+  initExplosions();
+  initGoodAstroids();
   scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
   levelText = game.add.text(game.world.width - 70, 5, "Level: 1", textStyle);
   livesText = game.add.text(game.world.width * 0.5, 20, "Lives: " + lives, textStyle);
@@ -220,5 +234,7 @@ function create() {
 
 function update() {
   keyboardInputHandler(sship);
+  keyboardInputHandler(gsship);
   game.physics.arcade.collide(astroids, sship, destroyShip);
+  game.physics.arcade.collide(goodAstroids, sship, toggleGodMode);
 }

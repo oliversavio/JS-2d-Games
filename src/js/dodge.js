@@ -19,6 +19,7 @@ var gameOverText;
 var livesText;
 var goodAstroids;
 var gsship;
+var speedFactor = 1;
 const textStyle = { font: '18px Arial', fill: '#ffffff' };
 const velocityMin = 180;
 const velocityMax = 300;
@@ -48,7 +49,7 @@ var genRandWithRange = function (min, max) {
 };
 
 var genRandomVelocity = function () {
-  return genRandWithRange(velocityMin, velocityMax);
+  return speedFactor * genRandWithRange(velocityMin, velocityMax);
 };
 
 var genRandomVelocityForGoodAstroids = function () {
@@ -214,6 +215,7 @@ var destroyShip = function (sship, astroid) {
 };
 
 var toggleGodModeOff = function(){
+  speedFactor = 1;
   sship.reset(gsship.x, gsship.y);
   gsship.reset(-20,-20);
 };
@@ -222,6 +224,7 @@ var toggleGodMode = function(ship, astroid){
   gsship.reset(ship.x, ship.y); 
   sship.reset(-20,-20);
   astroid.kill();
+  speedFactor = 3;
   game.time.events.add(4000, toggleGodModeOff, this);
 };
 
